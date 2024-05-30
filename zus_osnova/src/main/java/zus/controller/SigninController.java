@@ -3,6 +3,7 @@ package zus.controller;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
+import zus.entity.Korisnik;
 import zus.model.utility.JDBCUtils;
 import zus.view.MainView;
 import zus.view.SignInView;
@@ -26,11 +27,13 @@ public class SigninController implements EventHandler<ActionEvent> {
             a.setContentText("Prazna polja..");
             a.show();
         }else{
-
-            if(JDBCUtils.proveriDaLiSadrzi(korisnickoIme)){
+            Korisnik k = JDBCUtils.proveriDaLiSadrzi(korisnickoIme);
+            if (k != null) {
                 MainView.getInstance().show();
-                MainView.getInstance().setKorisnikName(mv.getUsernameTextField().getText());
-
+                JDBCUtils.setKorisnicki_id(k.getId_korisnik());
+                MainView.getInstance().setKorisnikName(k.getId_korisnik());
+                JDBCUtils.prikaziTrenutnaPutovanja();
+                MainView.getInstance().ispuniCheckBoxove();
             }else{
                 Alert a = new Alert(Alert.AlertType.ERROR);
                 a.setTitle("Error");
@@ -38,9 +41,5 @@ public class SigninController implements EventHandler<ActionEvent> {
                 a.show();
             }
         }
-
-
-
-
     }
 }

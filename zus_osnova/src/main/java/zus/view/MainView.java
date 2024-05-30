@@ -1,7 +1,5 @@
 package zus.view;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -10,18 +8,12 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import zus.controller.PregledKupnjiController;
-import zus.entity.Korisnik;
-import zus.entity.Planeta;
-import zus.entity.Putovanja;
-import zus.entity.Stan;
+import zus.entity.*;
 import zus.model.utility.JDBCUtils;
 
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.List;
 
 public class MainView extends Stage {
     private static MainView mainView;
@@ -40,45 +32,46 @@ public class MainView extends Stage {
 
         korisnikLabel = new Label("Korisnik");
         Label odaberiPlanetuLabel = new Label("Odaberi planetu");
-        planetaComboBox = new ComboBox<>();
+        planetaComboBox = new ComboBox<>(JDBCUtils.getPlanete());
+        planetaComboBox.setOnAction((e) -> {
+            JDBCUtils.setPlanetaId(planetaComboBox.getSelectionModel().getSelectedItem().getId_planete());
+            MainView.getInstance().ispuniCheckBoxove();
+        });
         Label odaberiStanLabel = new Label("Odaberi stan");
-        stanComboBox = new ComboBox<>();
+        stanComboBox = new ComboBox<>(JDBCUtils.getStanbeniObjekti());
         Label datumPolaskaLabel = new Label("Datum polaska");
         datumPolaskaField = new DatePicker();
         Label odaberitePrevozLabel = new Label("Odaberite prevoz");
-        prevozComboBox = new ComboBox<>();
-        Label imeLabel = new Label("Ime saputnika");
+        prevozComboBox = new ComboBox<>(JDBCUtils.getPrevozi());
+        Label imeLabel = new Label("Ime putnika");
         imeField = new TextField();
-        Label prezimeLabel = new Label("Prezime saputnika");
+        Label prezimeLabel = new Label("Prezime putnika");
         prezimeField = new TextField();
         Button pregledKupovinaButton = new Button("Pregled kupovina");
         pregledKupovinaButton.setOnAction(new PregledKupnjiController(this));
         Button kupiKartuButton = new Button("Kupi kartu");
         Label praznaLabel = new Label();
         Label sveKupovineLabel = new Label("Sve kupovine");
-        TableView<Putovanja> kupovine = new TableView<>();
+        TableView<PrikazPutovanja> kupovine = new TableView<>();
 
-        TableColumn<Putovanja,String> kol1 = new TableColumn<>("ime");
-        TableColumn<Putovanja,String> kol2 = new TableColumn<>("prezime");
-        TableColumn<Putovanja,Planeta> kol3 = new TableColumn<>("planeta");
-        TableColumn<Putovanja,Stan> kol4 = new TableColumn<>("stan");
-        TableColumn<Putovanja, LocalDate> kol5 = new TableColumn<>("polazak");
-        TableColumn<Putovanja,String> kol6 = new TableColumn<>("prevoz");
-        TableColumn<Putovanja, List<Korisnik>> kol7 = new TableColumn<>("saputnici");
+        TableColumn<PrikazPutovanja, String> kol1 = new TableColumn<>("ime putnika");
+        TableColumn<PrikazPutovanja, String> kol2 = new TableColumn<>("prezime putnika");
+        TableColumn<PrikazPutovanja, String> kol3 = new TableColumn<>("planeta");
+        TableColumn<PrikazPutovanja, String> kol4 = new TableColumn<>("stan");
+        TableColumn<PrikazPutovanja, LocalDate> kol5 = new TableColumn<>("polazak");
+        TableColumn<PrikazPutovanja, String> kol6 = new TableColumn<>("prevoz");
 
 
-        kol1.setCellValueFactory(new PropertyValueFactory<>("imeKorisnika"));
-        kol2.setCellValueFactory(new PropertyValueFactory<>("prezimeKorisnika"));
-        kol3.setCellValueFactory(new PropertyValueFactory<>("planeta"));
-        kol4.setCellValueFactory(new PropertyValueFactory<>("stan"));
+        kol1.setCellValueFactory(new PropertyValueFactory<>("ime_putnika"));
+        kol2.setCellValueFactory(new PropertyValueFactory<>("prezime_putnika"));
+        kol3.setCellValueFactory(new PropertyValueFactory<>("naziv_planete"));
+        kol4.setCellValueFactory(new PropertyValueFactory<>("naziv_stana"));
         kol5.setCellValueFactory(new PropertyValueFactory<>("datum_i_vreme"));
         kol6.setCellValueFactory(new PropertyValueFactory<>("prevoz"));
-        kol7.setCellValueFactory(new PropertyValueFactory<>("saputnici"));
 
-        ObservableList<Putovanja> obPutovanja = FXCollections.observableArrayList(JDBCUtils.izvuciTrenutnaPutovanja());
-        kupovine.setItems(obPutovanja);
-        kupovine.getColumns().addAll(kol1, kol2, kol3, kol4, kol5, kol6, kol7);
-        //imeKorisnika+" "+prezimeKorisnika+" "+planeta+" "+stan+" "+datum_i_vreme+" "+prevoz+" "+saputnici
+        kupovine.getColumns().addAll(kol1, kol2, kol3, kol4, kol5, kol6);
+        kupovine.setItems(JDBCUtils.getPutovanja());
+        //ime_putnika+" "+prezime_putnika+" "+naziv_planete+" "+naziv_stana+" "+datum_i_vreme+" "+prevoz+"
 
 
 
@@ -137,59 +130,23 @@ public class MainView extends Stage {
         Scene sc = new Scene(bp, 600, 600);
         setScene(sc);
 
-        dodajPlanete(JDBCUtils.selectAllFromPlanete());
-        dodajStanove(JDBCUtils.selectAllFromStanovi());
-        dodajPrevoz(JDBCUtils.izvuciPrevoz());
+        this.show();
     }
     public static MainView getInstance() {
         if (mainView == null) {
             mainView = new MainView();
-
         }
         return mainView;
     }
-    public void dodajPlanete(Collection<Planeta> planete){
-        planetaComboBox.getItems().addAll(planete);
-        planetaComboBox.getSelectionModel().select(0);
+
+    public void ispuniCheckBoxove() {
+        JDBCUtils.selectNastanjivePlanete();
+        JDBCUtils.selectAllFromStanovi();
     }
-    public void setKorisnikName(String korIme){
-        String ime_prezime = JDBCUtils.izvuciImeIPrezime(korIme);
+
+    public void setKorisnikName(int korisnickiId) {
+        String ime_prezime = JDBCUtils.izvuciImeIPrezime(korisnickiId);
         korisnikLabel.setText("Korisnik: "+ime_prezime);
     }
-    public void dodajStanove(Collection<Stan> s){
-        stanComboBox.getItems().addAll(s);
-        stanComboBox.getSelectionModel().select(0);
-    }
-    public void dodajPrevoz(Collection<String>prevozi){
-        prevozComboBox.getItems().addAll(prevozi);
-        prevozComboBox.getSelectionModel().select(0);
-    }
 
-    public void setKorisnikLabel(Label korisnikLabel) {
-        this.korisnikLabel = korisnikLabel;
-    }
-
-    public ComboBox<Planeta> getPlanetaComboBox() {
-        return planetaComboBox;
-    }
-
-    public ComboBox<Stan> getStanComboBox() {
-        return stanComboBox;
-    }
-
-    public DatePicker getDatumPolaskaField() {
-        return datumPolaskaField;
-    }
-
-    public ComboBox<String> getPrevozComboBox() {
-        return prevozComboBox;
-    }
-
-    public TextField getImeField() {
-        return imeField;
-    }
-
-    public TextField getPrezimeField() {
-        return prezimeField;
-    }
 }

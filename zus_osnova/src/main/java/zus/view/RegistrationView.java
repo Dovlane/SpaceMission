@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import zus.entity.Korisnik;
 import zus.model.utility.JDBCUtils;
 
 public class RegistrationView extends Stage {
@@ -44,7 +45,8 @@ public class RegistrationView extends Stage {
                     alert.setContentText("Popunite sva polja");
                     alert.showAndWait();
                 }else{
-                    if(JDBCUtils.proveriDaLiSadrzi(korisnikoIme)){
+                    Korisnik k = JDBCUtils.proveriDaLiSadrzi(korisnikoIme);
+                    if (k == null) {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("Upozorenje");
                         alert.setHeaderText(null);
@@ -93,6 +95,4 @@ public class RegistrationView extends Stage {
         this.setTitle("Registracija");
         this.setScene(scene);
     }
-
-
 }

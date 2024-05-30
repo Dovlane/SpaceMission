@@ -1,5 +1,9 @@
 package zus.entity;
 
+import javax.xml.transform.Result;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class Korisnik {
     private int id_korisnik;
     private String ime;
@@ -13,6 +17,14 @@ public class Korisnik {
         this.prezime = prezime;
         this.korisnickoIme = korisnickoIme;
         this.lozinka = lozinka;
+    }
+
+    public Korisnik(ResultSet resultSet) throws SQLException {
+        this.id_korisnik = resultSet.getInt(1);
+        this.ime = resultSet.getString(2);
+        this.prezime = resultSet.getString(3);
+        this.korisnickoIme = resultSet.getString(4);
+        this.lozinka = resultSet.getString(5);
     }
     public Korisnik(int id_korisnik, String korisnickoIme, String lozinka) {
         this.id_korisnik = id_korisnik;
