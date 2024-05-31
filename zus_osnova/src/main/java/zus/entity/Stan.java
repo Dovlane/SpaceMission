@@ -5,9 +5,10 @@ public class Stan {
     private String naziv;
     private int id_planete;
 
-    public Stan(int id_objekta, String naziv) {
+    public Stan(int id_objekta, String naziv, int id_planete) {
         this.id_objekta = id_objekta;
         this.naziv = naziv;
+        this.id_planete = id_planete;
     }
     public Stan(String naziv) {
         this.naziv = naziv;

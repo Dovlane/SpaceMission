@@ -19,8 +19,6 @@ public class SigninController implements EventHandler<ActionEvent> {
         String korisnickoIme = mv.getUsernameTextField().getText();
         String password = mv.getPasswordTextField().getText();
 
-        //MainView.getInstance().show();
-
         if(korisnickoIme.isEmpty() || password.isEmpty()){
             Alert a = new Alert(Alert.AlertType.ERROR);
             a.setTitle("Error");
