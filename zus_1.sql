@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 30, 2024 at 02:35 PM
+-- Generation Time: Jun 01, 2024 at 12:14 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -44,7 +44,9 @@ INSERT INTO `korisnici` (`id_korisnika`, `korisnicko_ime`, `lozinka`, `ime`, `pr
 (101, 'Mićko', '2', 'Miroslav', 'Petrović'),
 (102, 'Luka', '3', 'Luka', 'Jovanović'),
 (103, 'Pavle', '4', 'Pavle', 'Nikolić'),
-(104, 'Matija', '5', 'Matija', 'Ilić');
+(104, 'Matija', '5', 'Matija', 'Ilić'),
+(105, 'gagi', '123', 'Dragan', 'Urosevic'),
+(106, 'paja', '321', 'Pavle', 'Pavic');
 
 -- --------------------------------------------------------
 
@@ -86,21 +88,20 @@ CREATE TABLE `planete` (
   `rastvarac` decimal(4,2) DEFAULT NULL,
   `prag_gravitacije` int(5) DEFAULT NULL,
   `brzina_orb` int(3) DEFAULT NULL,
-  `br_poginulih` int(3) DEFAULT NULL,
-  `nastanjiva` tinyint(1) DEFAULT NULL
+  `br_poginulih` int(3) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `planete`
 --
 
-INSERT INTO `planete` (`id_planete`, `naziv`, `udaljenost`, `min_temp`, `max_temp`, `kiseonik`, `rastvarac`, `prag_gravitacije`, `brzina_orb`, `br_poginulih`, `nastanjiva`) VALUES
-(1, 'Mars', 150000000, 200, 320, 20.00, 75.00, 1500, 30, 5, 1),
-(2, 'Aurora', 170000000, 220, 330, 18.00, 76.00, 1200, 28, 10, 1),
-(3, 'Jupiter', 300000000, 100, 400, 10.00, 80.00, 500, 40, 30, 0),
-(4, 'Tatuin', 250000000, 50, 450, 5.00, 70.00, 300, 50, 50, 0),
-(5, 'Kašik', 50000000, 400, 600, 2.00, 50.00, 100, 20, 70, 0),
-(6, 'Ksilem', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `planete` (`id_planete`, `naziv`, `udaljenost`, `min_temp`, `max_temp`, `kiseonik`, `rastvarac`, `prag_gravitacije`, `brzina_orb`, `br_poginulih`) VALUES
+(1, 'Mars', 150000000, 200, 320, 20.00, 75.00, 1500, 30, 5),
+(2, 'Aurora', 170000000, 220, 330, 18.00, 76.00, 1200, 28, 10),
+(3, 'Jupiter', 300000000, 100, 400, 10.00, 80.00, 500, 40, 30),
+(4, 'Tatuin', 250000000, 50, 450, 5.00, 70.00, 300, 50, 50),
+(5, 'Kašik', 50000000, 400, 600, 2.00, 50.00, 100, 20, 70),
+(6, 'Ksilem', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -130,7 +131,14 @@ INSERT INTO `putovanja` (`id_putovanja`, `prevoz`, `datum_i_vreme`, `ime_putnika
 (504, 'Zvezda smrti', '2150-06-30 09:00:00', 'Matija', 'Ilić', 104, 304),
 (505, 'Spejs šatl', '2160-03-25 16:15:00', 'Vlada', 'Marković', 100, 305),
 (506, 'TIE borac', '2170-08-19 11:30:00', 'Miroslav', 'Petrović', 101, 306),
-(507, 'Falkon', '2180-12-10 14:45:00', 'Luka', 'Jovanović', 102, 307);
+(507, 'Falkon', '2180-12-10 14:45:00', 'Luka', 'Jovanović', 102, 307),
+(508, 'Spejs šatl', '2100-01-01 12:00:00', 'Vladimir', 'Lignja', 100, 306),
+(509, 'Falkon', '2100-01-01 09:00:00', 'Vladimir', 'Nelignja', 100, 306),
+(513, 'Falkon', '2100-01-01 09:00:00', 'Vladimir', 'Antilignja', 100, 309),
+(514, 'TIE borac', '2100-01-01 09:00:00', 'Vladica', 'Noblica', 100, 309),
+(515, 'TIE borac', '2100-01-01 09:00:00', 'Vladica', 'Noblica', 100, 307),
+(516, 'Falkon', '2100-01-01 08:00:00', 'Isidora', 'Prica', 100, 303),
+(517, 'Falkon', '2100-01-01 08:00:00', 'Isidora', 'Prica', 106, 307);
 
 -- --------------------------------------------------------
 
@@ -206,7 +214,7 @@ ALTER TABLE `st_objekti`
 -- AUTO_INCREMENT for table `korisnici`
 --
 ALTER TABLE `korisnici`
-  MODIFY `id_korisnika` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=105;
+  MODIFY `id_korisnika` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=107;
 
 --
 -- AUTO_INCREMENT for table `misije`
@@ -224,7 +232,7 @@ ALTER TABLE `planete`
 -- AUTO_INCREMENT for table `putovanja`
 --
 ALTER TABLE `putovanja`
-  MODIFY `id_putovanja` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=508;
+  MODIFY `id_putovanja` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=518;
 
 --
 -- Constraints for dumped tables

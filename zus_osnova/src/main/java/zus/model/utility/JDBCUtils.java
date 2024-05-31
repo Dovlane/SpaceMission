@@ -8,8 +8,6 @@ import zus.entity.*;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 
 public class JDBCUtils {
@@ -70,15 +68,13 @@ public class JDBCUtils {
         planetaId = noviPlanetaId;
     }
     public static int dajIDpoStringuObjekta(String nazivObjekta, int planetaId){
-        String query = "SELECT * FROM st_objekti WHERE naziv = ? AND id_planete = ?";
+        String query = "SELECT naziv, id_planete FROM st_objekti WHERE naziv = ? AND id_planete = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)){
             preparedStatement.setString(1, nazivObjekta);
             preparedStatement.setInt(2, planetaId);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-
                 int id = resultSet.getInt(1);
-                //System.out.println(id);
                 return id;
             }
         } catch (SQLException e) {
@@ -124,16 +120,34 @@ public class JDBCUtils {
             throw new RuntimeException(e);
         }
     }
-    public static void selectNastanjivePlanete() {
-        String query = "select * from planete where nastanjiva is not null and nastanjiva = 1";
-        try {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(query);
-            while (resultSet.next()) {
-                int planetaId = resultSet.getInt(1);
-                String naziv = resultSet.getString(2);
-                int nastanjiva = resultSet.getInt(11);
 
+    public static void selectNastanjivePlanete() {
+        String query = "select id_planete, naziv from planete where " +
+                "(udaljenost is not null and min_temp is not null and max_temp is not null and kiseonik is not null and " +
+                "rastvarac is not null and prag_gravitacije is not null and brzina_orb is not null and br_poginulih is not null) " +
+                "and (udaljenost between ? and ?) and (min_temp between ? and ?) and (max_temp between ? and ?) and (max_temp - min_temp) <= ? " +
+                "and (kiseonik between ? and ?) and ((rastvarac + kiseonik)  between ? and ?) and prag_gravitacije >= ? and (brzina_orb between ? and ?) and br_poginulih <= ?";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, 100000000);
+            statement.setInt(2, 200000000);
+            statement.setInt(3, 120);
+            statement.setInt(4, 250);
+            statement.setInt(5, 250);
+            statement.setInt(6, 350);
+            statement.setInt(7, 120);
+            statement.setDouble(8, 15.0);
+            statement.setDouble(9, 25.0);
+            statement.setDouble(10, 90.0);
+            statement.setDouble(11, 99.0);
+            statement.setInt(12, 1000);
+            statement.setInt(13, 25);
+            statement.setInt(14, 35);
+            statement.setInt(15, 20);
+
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
                 boolean vecUListi = false;
                 for (var planeta : planete) {
                     if (planeta.getId_planete() == planetaId) {
@@ -144,7 +158,10 @@ public class JDBCUtils {
                 if (vecUListi)
                     continue;
 
-                Planeta p = new Planeta(planetaId,naziv,nastanjiva);
+                int planetaId = resultSet.getInt(1);
+                String naziv = resultSet.getString(2);
+
+                Planeta p = new Planeta(planetaId,naziv);
                 planete.add(p);
             }
         } catch (SQLException e) {
@@ -152,14 +169,14 @@ public class JDBCUtils {
         }
     }
     public static String izvuciImeIPrezime(int korisnicki_id){
-        String query = "SELECT * FROM korisnici WHERE id_korisnika = ?";
+        String query = "SELECT ime, prezime FROM korisnici WHERE id_korisnika = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setInt(1, korisnicki_id);
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
-                    return resultSet.getString(4) + " " + resultSet.getString(5);
+                    return resultSet.getString(1) + " " + resultSet.getString(2);
                 }
             }
         } catch (SQLException e) {
@@ -168,14 +185,14 @@ public class JDBCUtils {
         return "";
     }
     public static String izvuciIme(int korisnicki_id){
-        String query = "SELECT * FROM korisnici WHERE id_korisnika = ?";
+        String query = "SELECT ime FROM korisnici WHERE id_korisnika = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setInt(1, korisnicki_id);
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
-                    return resultSet.getString(4) ;
+                    return resultSet.getString(1) ;
                 }
             }
         } catch (SQLException e) {
@@ -184,14 +201,14 @@ public class JDBCUtils {
         return "";
     }
     public static String izvuciPrezime(int korisnicki_id){
-        String query = "SELECT * FROM korisnici WHERE id_korisnika = ?";
+        String query = "SELECT prezime FROM korisnici WHERE id_korisnika = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setInt(1, korisnicki_id);
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
-                    return resultSet.getString(5) ;
+                    return resultSet.getString(1) ;
                 }
             }
         } catch (SQLException e) {
@@ -203,7 +220,7 @@ public class JDBCUtils {
         if (planetaId == 0)
             return;
 
-        String query = "SELECT * FROM st_objekti WHERE id_planete = ?";
+        String query = "SELECT id_objekta, naziv, id_planete FROM st_objekti WHERE id_planete = ?";
         stanovi.clear();
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, planetaId);
