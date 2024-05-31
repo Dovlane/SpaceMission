@@ -20,6 +20,9 @@ public class JDBCUtils {
     private static ObservableList<String> prevozi = FXCollections.observableArrayList();
     private static int korisnicki_id = 0;
     private static int planetaId = 0;
+    private static int objekat_id = 0;
+
+
     public static void connect() {
         Properties properties = new Properties();
         properties.put("user", "root");
@@ -66,6 +69,23 @@ public class JDBCUtils {
     public static void setPlanetaId(int noviPlanetaId) {
         planetaId = noviPlanetaId;
     }
+    public static int dajIDpoStringuObjekta(String nazivObjekta, int planetaId){
+        String query = "SELECT * FROM st_objekti WHERE naziv = ? AND id_planete = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)){
+            preparedStatement.setString(1, nazivObjekta);
+            preparedStatement.setInt(2, planetaId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+
+                int id = resultSet.getInt(1);
+                //System.out.println(id);
+                return id;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return 0;
+    }
 
     public static Korisnik proveriDaLiSadrzi(String korisnickoIme) {
 
@@ -83,6 +103,7 @@ public class JDBCUtils {
             throw new RuntimeException(e);
         }
         return null;
+
     }
 
     public static void insertIntoKorisnik(String ime, String prezime, String korisnickoIme, String lozinka) {
@@ -146,6 +167,38 @@ public class JDBCUtils {
         }
         return "";
     }
+    public static String izvuciIme(int korisnicki_id){
+        String query = "SELECT * FROM korisnici WHERE id_korisnika = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setInt(1, korisnicki_id);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getString(4) ;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return "";
+    }
+    public static String izvuciPrezime(int korisnicki_id){
+        String query = "SELECT * FROM korisnici WHERE id_korisnika = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setInt(1, korisnicki_id);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getString(5) ;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return "";
+    }
     public static void selectAllFromStanovi() {
         if (planetaId == 0)
             return;
@@ -156,10 +209,10 @@ public class JDBCUtils {
             preparedStatement.setInt(1, planetaId);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-
+                int id_objekta = resultSet.getInt(1);
                 String naziv = resultSet.getString(2);
-
-                Stan s = new Stan(naziv);
+                int id_planete = resultSet.getInt(3);
+                Stan s = new Stan(id_objekta, naziv, id_planete);
                 stanovi.add(s);
             }
         } catch (SQLException e) {
@@ -193,7 +246,28 @@ public class JDBCUtils {
         }
 
     }
+    public static void dodajPutovanje(String ime, String prezime, int korisnickiId, int objekatId, LocalDateTime datumIVreme, String prevoz) {
+        String query = "INSERT INTO putovanja (ime_putnika, prezime_putnika, id_korisnika, id_objekta, datum_i_vreme, prevoz) " +
+                "VALUES (?, ?, ?, ?, ?, ?)";
+        try  {
+            PreparedStatement statement = connection.prepareStatement(query);
+            connection.setAutoCommit(false);
 
+            statement.setString(1, ime);
+            statement.setString(2, prezime);
+            statement.setInt(3, korisnickiId);
+            statement.setInt(4, objekatId);
+            statement.setTimestamp(5, Timestamp.valueOf(datumIVreme));
+            statement.setString(6, prevoz);
 
+            statement.executeUpdate();
+            connection.commit();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public static int getKorisnickiId() {
+        return korisnicki_id;
+    }
 
 }

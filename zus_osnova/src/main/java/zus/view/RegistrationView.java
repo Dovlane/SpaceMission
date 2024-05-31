@@ -46,7 +46,8 @@ public class RegistrationView extends Stage {
                     alert.showAndWait();
                 }else{
                     Korisnik k = JDBCUtils.proveriDaLiSadrzi(korisnikoIme);
-                    if (k == null) {
+                    //System.out.println(k);
+                    if (k != null) {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("Upozorenje");
                         alert.setHeaderText(null);
