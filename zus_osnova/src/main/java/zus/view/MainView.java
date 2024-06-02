@@ -213,4 +213,24 @@ public class MainView extends Stage {
         String ime_prezime = JDBCUtils.izvuciImeIPrezime(korisnickiId);
         korisnikLabel.setText("Korisnik: " + ime_prezime);
     }
+
+    public TextField getImeField() {
+        return imeField;
+    }
+
+    public TextField getPrezimeField() {
+        return prezimeField;
+    }
+
+    public ComboBox<Planeta> getPlanetaComboBox() {
+        return planetaComboBox;
+    }
+
+    public ComboBox<Stan> getStanComboBox() {
+        return stanComboBox;
+    }
+
+    public ComboBox<String> getPrevozComboBox() {
+        return prevozComboBox;
+    }
 }

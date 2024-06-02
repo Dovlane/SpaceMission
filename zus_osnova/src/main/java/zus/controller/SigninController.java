@@ -35,6 +35,9 @@ public class SigninController implements EventHandler<ActionEvent> {
                     return;
                 }
                 MainView.getInstance().show();
+                MainView.getInstance().getImeField().clear();
+                MainView.getInstance().getPrezimeField().clear();
+
                 JDBCUtils.setKorisnicki_id(k.getId_korisnik());
                 MainView.getInstance().setKorisnikName(k.getId_korisnik());
                 JDBCUtils.prikaziTrenutnaPutovanja();
