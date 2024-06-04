@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 01, 2024 at 12:14 AM
+-- Generation Time: Jun 04, 2024 at 07:55 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -124,21 +124,9 @@ CREATE TABLE `putovanja` (
 --
 
 INSERT INTO `putovanja` (`id_putovanja`, `prevoz`, `datum_i_vreme`, `ime_putnika`, `prezime_putnika`, `id_korisnika`, `id_objekta`) VALUES
-(500, 'Spejs šatl', '2110-05-14 10:00:00', 'Vlada', 'Marković', 100, 300),
-(501, 'Falkon', '2120-07-21 15:30:00', 'Miroslav', 'Petrović', 101, 301),
-(502, 'TIE borac', '2130-11-03 08:45:00', 'Luka', 'Jovanović', 102, 302),
-(503, 'Nabu kruzer', '2140-01-15 13:00:00', 'Pavle', 'Nikolić', 103, 303),
-(504, 'Zvezda smrti', '2150-06-30 09:00:00', 'Matija', 'Ilić', 104, 304),
-(505, 'Spejs šatl', '2160-03-25 16:15:00', 'Vlada', 'Marković', 100, 305),
-(506, 'TIE borac', '2170-08-19 11:30:00', 'Miroslav', 'Petrović', 101, 306),
-(507, 'Falkon', '2180-12-10 14:45:00', 'Luka', 'Jovanović', 102, 307),
-(508, 'Spejs šatl', '2100-01-01 12:00:00', 'Vladimir', 'Lignja', 100, 306),
-(509, 'Falkon', '2100-01-01 09:00:00', 'Vladimir', 'Nelignja', 100, 306),
-(513, 'Falkon', '2100-01-01 09:00:00', 'Vladimir', 'Antilignja', 100, 309),
-(514, 'TIE borac', '2100-01-01 09:00:00', 'Vladica', 'Noblica', 100, 309),
-(515, 'TIE borac', '2100-01-01 09:00:00', 'Vladica', 'Noblica', 100, 307),
-(516, 'Falkon', '2100-01-01 08:00:00', 'Isidora', 'Prica', 100, 303),
-(517, 'Falkon', '2100-01-01 08:00:00', 'Isidora', 'Prica', 106, 307);
+(530, 'Falkon', '2100-01-01 09:00:00', 'Vladica', 'Markovic', 100, 301),
+(531, 'Falkon', '2100-01-01 09:00:00', 'Milica', 'Markovic', 100, 301),
+(532, 'Falkon', '2100-01-01 09:00:00', 'Milos', 'Markovic', 100, 301);
 
 -- --------------------------------------------------------
 
@@ -149,6 +137,7 @@ INSERT INTO `putovanja` (`id_putovanja`, `prevoz`, `datum_i_vreme`, `ime_putnika
 CREATE TABLE `st_objekti` (
   `id_objekta` int(11) NOT NULL,
   `naziv` varchar(20) NOT NULL,
+  `kapacitet` int(2) NOT NULL,
   `id_planete` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -156,17 +145,17 @@ CREATE TABLE `st_objekti` (
 -- Dumping data for table `st_objekti`
 --
 
-INSERT INTO `st_objekti` (`id_objekta`, `naziv`, `id_planete`) VALUES
-(300, 'Duplex', 1),
-(301, 'Garsonjera', 1),
-(302, 'Kuca', 2),
-(303, 'Stan', 2),
-(304, 'Garsonjera', 2),
-(305, 'Duplex 2', 1),
-(306, 'Garsonjera 2', 1),
-(307, 'Kuca 2', 2),
-(308, 'Stan 2', 2),
-(309, 'Garsonjera 2', 2);
+INSERT INTO `st_objekti` (`id_objekta`, `naziv`, `kapacitet`, `id_planete`) VALUES
+(300, 'Duplex', 6, 1),
+(301, 'Garsonjera', 0, 1),
+(302, 'Kuca', 5, 2),
+(303, 'Stan', 2, 2),
+(304, 'Garsonjera', 3, 2),
+(305, 'Duplex 2', 6, 1),
+(306, 'Garsonjera 2', 3, 1),
+(307, 'Kuca 2', 5, 2),
+(308, 'Stan 2', 3, 2),
+(309, 'Garsonjera 2', 3, 2);
 
 --
 -- Indexes for dumped tables
@@ -232,7 +221,7 @@ ALTER TABLE `planete`
 -- AUTO_INCREMENT for table `putovanja`
 --
 ALTER TABLE `putovanja`
-  MODIFY `id_putovanja` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=518;
+  MODIFY `id_putovanja` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=533;
 
 --
 -- Constraints for dumped tables

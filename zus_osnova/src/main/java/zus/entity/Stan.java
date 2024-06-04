@@ -3,11 +3,13 @@ package zus.entity;
 public class Stan {
     private int id_objekta;
     private String naziv;
+    private int kapacitet;
     private int id_planete;
 
-    public Stan(int id_objekta, String naziv, int id_planete) {
+    public Stan(int id_objekta, String naziv, int kapacitet, int id_planete) {
         this.id_objekta = id_objekta;
         this.naziv = naziv;
+        this.kapacitet = kapacitet;
         this.id_planete = id_planete;
     }
     public Stan(String naziv) {
