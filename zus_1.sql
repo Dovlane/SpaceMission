@@ -3,11 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
-<<<<<<< HEAD
+
 -- Generation Time: Jun 05, 2024 at 11:49 AM
-=======
--- Generation Time: Jun 04, 2024 at 07:55 PM
->>>>>>> 111cce168b2debdcddef1797f9f765cfcc127ea7
+
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -156,7 +154,6 @@ CREATE TABLE `putovanja` (
 --
 
 INSERT INTO `putovanja` (`id_putovanja`, `prevoz`, `datum_i_vreme`, `ime_putnika`, `prezime_putnika`, `id_korisnika`, `id_objekta`) VALUES
-<<<<<<< HEAD
 (500, 'Spejs šatl', '2110-05-14 10:00:00', 'Vlada', 'Marković', 100, 300),
 (501, 'Falkon', '2120-07-21 15:30:00', 'Miroslav', 'Petrović', 101, 301),
 (502, 'TIE borac', '2130-11-03 08:45:00', 'Luka', 'Jovanović', 102, 302),
@@ -179,12 +176,10 @@ INSERT INTO `putovanja` (`id_putovanja`, `prevoz`, `datum_i_vreme`, `ime_putnika
 (522, 'TIE borac', '2100-01-01 10:00:00', 'Jovo', 'Matic', 108, 306),
 (523, 'Nabu kruzer', '2100-01-01 11:00:00', 'Luka', 'Jovanović', 102, 304),
 (524, 'TIE borac', '2100-01-13 11:00:00', 'Kiki', 'Lolic', 109, 301),
-(525, 'TIE borac', '2100-01-13 11:00:00', 'Mirza', 'Teletovic', 109, 305);
-=======
+(525, 'TIE borac', '2100-01-13 11:00:00', 'Mirza', 'Teletovic', 109, 305),
 (530, 'Falkon', '2100-01-01 09:00:00', 'Vladica', 'Markovic', 100, 301),
 (531, 'Falkon', '2100-01-01 09:00:00', 'Milica', 'Markovic', 100, 301),
 (532, 'Falkon', '2100-01-01 09:00:00', 'Milos', 'Markovic', 100, 301);
->>>>>>> 111cce168b2debdcddef1797f9f765cfcc127ea7
 
 -- --------------------------------------------------------
 
@@ -292,11 +287,7 @@ ALTER TABLE `planete`
 -- AUTO_INCREMENT for table `putovanja`
 --
 ALTER TABLE `putovanja`
-<<<<<<< HEAD
-  MODIFY `id_putovanja` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=526;
-=======
   MODIFY `id_putovanja` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=533;
->>>>>>> 111cce168b2debdcddef1797f9f765cfcc127ea7
 
 --
 -- Constraints for dumped tables
