@@ -48,19 +48,11 @@ public class JDBCUtils {
     }
 
     public static ObservableList<String> getPrevozi() {
-        String query = "select distinct prevoz from putovanja";
-        try {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(query);
-            while (resultSet.next()) {
-
-                String prevoz = resultSet.getString(1);
-
-                prevozi.add(prevoz);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        String[] opcijePrevoza = {"Spejs šatl", "Falkon", "TIE borac", "Nabu kruzer", "Zvezda smrti"};
+        for (String prevoz : opcijePrevoza) {
+            prevozi.add(prevoz);
         }
+
         return prevozi;
     }
 
@@ -222,16 +214,22 @@ public class JDBCUtils {
         if (planetaId == 0)
             return;
 
-        String query = "SELECT id_objekta, naziv, id_planete FROM st_objekti WHERE id_planete = ?";
+        String query = "SELECT id_objekta, naziv, kapacitet, id_planete FROM st_objekti WHERE id_planete = ? AND kapacitet > ?";
         stanovi.clear();
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+        try {
+            connection.setAutoCommit(false);
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, planetaId);
+            preparedStatement.setInt(2, 0);
+            connection.commit();
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 int id_objekta = resultSet.getInt(1);
                 String naziv = resultSet.getString(2);
-                int id_planete = resultSet.getInt(3);
-                Stan s = new Stan(id_objekta, naziv, id_planete);
+                int kapacitet = resultSet.getInt(3);
+                int id_planete = resultSet.getInt(4);
+                Stan s = new Stan(id_objekta, naziv, kapacitet, id_planete);
                 stanovi.add(s);
             }
         } catch (SQLException e) {
@@ -271,16 +269,49 @@ public class JDBCUtils {
         try  {
             PreparedStatement statement = connection.prepareStatement(query);
             connection.setAutoCommit(false);
-
             statement.setString(1, ime);
             statement.setString(2, prezime);
             statement.setInt(3, korisnickiId);
             statement.setInt(4, objekatId);
             statement.setTimestamp(5, Timestamp.valueOf(datumIVreme));
             statement.setString(6, prevoz);
-
             statement.executeUpdate();
             connection.commit();
+
+            int kapacitet;
+            try {
+                String objekatQuery = "SELECT kapacitet FROM st_objekti WHERE id_objekta = ?";
+                PreparedStatement objekatStatement = connection.prepareStatement(objekatQuery);
+                objekatStatement.setInt(1, objekatId);
+                ResultSet objekatResultSet = objekatStatement.executeQuery();
+                if (objekatResultSet.next()) {
+                    kapacitet = objekatResultSet.getInt(1);
+                }
+                else {
+                    kapacitet = 0;
+                    System.out.println("GRESKA");
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            System.out.println("kapacitet = " + kapacitet + "\n");
+
+            connection.setAutoCommit(false);
+            String updateQuery = "UPDATE st_objekti SET kapacitet = ? where id_objekta = ?";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+                kapacitet -= 1;
+                preparedStatement.setInt(1, kapacitet);
+                preparedStatement.setInt(2, objekatId);
+                preparedStatement.executeUpdate();
+                connection.commit();
+            } catch (SQLException e) {
+                connection.rollback();
+                throw new RuntimeException(e);
+            } finally {
+                connection.setAutoCommit(true);
+            }
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
