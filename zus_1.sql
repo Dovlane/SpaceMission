@@ -3,9 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
-
--- Generation Time: Jun 05, 2024 at 11:49 AM
-
+-- Generation Time: Jun 05, 2024 at 02:14 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -73,11 +71,7 @@ INSERT INTO `korisnici` (`id_korisnika`, `korisnicko_ime`, `lozinka`, `ime`, `pr
 (102, 'Luka', '3', 'Luka', 'Jovanović'),
 (103, 'Pavle', '4', 'Pavle', 'Nikolić'),
 (104, 'Matija', '5', 'Matija', 'Ilić'),
-(105, 'gagi', '123', 'Dragan', 'Urosevic'),
-(106, 'paja', '321', 'Pavle', 'Pavic'),
-(107, 'miki', '123', 'Miki', 'Nosonja'),
-(108, 'jjj', '123', 'Jovo', 'Matic'),
-(109, 'kiki', '123', 'Kiki', 'Lolic');
+(105, 'gagi', '123', 'Dragan', 'Urosevic');
 
 -- --------------------------------------------------------
 
@@ -161,25 +155,7 @@ INSERT INTO `putovanja` (`id_putovanja`, `prevoz`, `datum_i_vreme`, `ime_putnika
 (504, 'Zvezda smrti', '2150-06-30 09:00:00', 'Matija', 'Ilić', 104, 304),
 (505, 'Spejs šatl', '2160-03-25 16:15:00', 'Vlada', 'Marković', 100, 305),
 (506, 'TIE borac', '2170-08-19 11:30:00', 'Miroslav', 'Petrović', 101, 306),
-(507, 'Falkon', '2180-12-10 14:45:00', 'Luka', 'Jovanović', 102, 307),
-(508, 'Spejs šatl', '2100-01-01 12:00:00', 'Vladimir', 'Lignja', 100, 306),
-(509, 'Falkon', '2100-01-01 09:00:00', 'Vladimir', 'Nelignja', 100, 306),
-(513, 'Falkon', '2100-01-01 09:00:00', 'Vladimir', 'Antilignja', 100, 309),
-(514, 'TIE borac', '2100-01-01 09:00:00', 'Vladica', 'Noblica', 100, 309),
-(515, 'TIE borac', '2100-01-01 09:00:00', 'Vladica', 'Noblica', 100, 307),
-(516, 'Falkon', '2100-01-01 08:00:00', 'Isidora', 'Prica', 100, 303),
-(517, 'Falkon', '2100-01-01 08:00:00', 'Isidora', 'Prica', 106, 307),
-(518, 'Falkon', '2100-01-01 10:00:00', 'Pera', 'Nikolic', 102, 304),
-(519, 'Falkon', '2100-01-01 10:00:00', 'Jova', 'Nedeljkovic', 107, 307),
-(520, 'TIE borac', '2100-01-01 10:00:00', 'Luka', 'Jovanović', 102, 304),
-(521, 'TIE borac', '2100-01-01 10:00:00', 'Janko', 'Mikic', 102, 301),
-(522, 'TIE borac', '2100-01-01 10:00:00', 'Jovo', 'Matic', 108, 306),
-(523, 'Nabu kruzer', '2100-01-01 11:00:00', 'Luka', 'Jovanović', 102, 304),
-(524, 'TIE borac', '2100-01-13 11:00:00', 'Kiki', 'Lolic', 109, 301),
-(525, 'TIE borac', '2100-01-13 11:00:00', 'Mirza', 'Teletovic', 109, 305),
-(530, 'Falkon', '2100-01-01 09:00:00', 'Vladica', 'Markovic', 100, 301),
-(531, 'Falkon', '2100-01-01 09:00:00', 'Milica', 'Markovic', 100, 301),
-(532, 'Falkon', '2100-01-01 09:00:00', 'Milos', 'Markovic', 100, 301);
+(507, 'Falkon', '2180-12-10 14:45:00', 'Luka', 'Jovanović', 102, 307);
 
 -- --------------------------------------------------------
 
@@ -200,7 +176,7 @@ CREATE TABLE `st_objekti` (
 
 INSERT INTO `st_objekti` (`id_objekta`, `naziv`, `kapacitet`, `id_planete`) VALUES
 (300, 'Duplex', 6, 1),
-(301, 'Garsonjera', 0, 1),
+(301, 'Garsonjera', 3, 1),
 (302, 'Kuca', 5, 2),
 (303, 'Stan', 2, 2),
 (304, 'Garsonjera', 3, 2),
