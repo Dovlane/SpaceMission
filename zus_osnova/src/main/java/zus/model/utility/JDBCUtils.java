@@ -124,9 +124,10 @@ public class JDBCUtils {
     public static void selectNastanjivePlanete() {
         String query = "select id_planete, naziv from planete where " +
                 "(udaljenost is not null and min_temp is not null and max_temp is not null and kiseonik is not null and " +
-                "rastvarac is not null and prag_gravitacije is not null and brzina_orb is not null and br_poginulih is not null) " +
+                "rastvarac is not null and prag_gravitacije is not null and brzina_orb is not null ) " +
                 "and (udaljenost between ? and ?) and (min_temp between ? and ?) and (max_temp between ? and ?) and (max_temp - min_temp) <= ? " +
-                "and (kiseonik between ? and ?) and ((rastvarac + kiseonik)  between ? and ?) and prag_gravitacije >= ? and (brzina_orb between ? and ?) and br_poginulih <= ?";
+                "and (kiseonik between ? and ?) and ((rastvarac + kiseonik)  between ? and ?) and prag_gravitacije >= ? and (brzina_orb between ? and ?)"
+                +"and (select count(*) from istrazivaci where id_planete = planete.id_planete) <=?";
 
         try {
             PreparedStatement statement = connection.prepareStatement(query);
@@ -145,6 +146,7 @@ public class JDBCUtils {
             statement.setInt(13, 25);
             statement.setInt(14, 35);
             statement.setInt(15, 20);
+
 
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
