@@ -25,7 +25,7 @@ If the user has already an account -> Sign In.<br/>
 <img src="images/SignInWindow.png" width="300" />
 
 If not, create on after pressing -> Registruj se.<br/>
-<img src="images/RegistrationWindow" width="300" />
+<img src="images/RegistrationWindow.png" width="300" />
 
 ### Reservation of new flight
 
