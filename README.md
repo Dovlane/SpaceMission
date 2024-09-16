@@ -22,12 +22,15 @@ These conditions are checked with SQL instructions.
 ### Loging
 
 If the user has already an account -> Sign In.<br/>
+
 <img src="images/SignInWindow.png" width="300" />
 
 If not, create on after pressing -> Registruj se.<br/>
+
 <img src="images/RegistrationWindow.png" width="300" />
 
 ### Reservation of new flight
 
 After logging, here you choose a planet, accomodation, date and time of a dpearture, transport, name and surname of a passenger. At the end, click "Kupi kartu", and your card will be shown at bottom side of the following image:<br/>
+
 <img src="images/ReservationOfFlight.png" width="300" />
